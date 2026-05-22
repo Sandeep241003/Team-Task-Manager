@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import env from './config/env.js';
-import corsOptions from './config/cors.js';
 import connectDB from './config/db.js';
 import routes from './routes/index.js';
 import notFound from './middleware/notFound.js';
@@ -10,9 +9,16 @@ import requestLogger from './middleware/requestLogger.js';
 
 const app = express();
 
+app.use(cors({
+  origin: process.env.CLIENT_URL,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+app.options('*', cors());
+
 app.set('trust proxy', 1);
 
-app.use(cors(corsOptions));
 app.use(express.json({ limit: '10kb' }));
 app.use(requestLogger);
 
