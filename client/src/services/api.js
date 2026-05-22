@@ -1,6 +1,36 @@
 import axios from 'axios';
 
-export const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+/**
+ * Normalize API base URL for production.
+ * VITE_API_URL should be the Railway backend URL including /api suffix.
+ * Example: https://your-app.up.railway.app/api
+ */
+const normalizeBaseUrl = (url) => {
+  if (!url || url === '/api') {
+    return import.meta.env.DEV ? '/api' : '';
+  }
+
+  const trimmed = url.replace(/\/+$/, '');
+
+  if (trimmed.endsWith('/api/api')) {
+    return trimmed.replace(/\/api\/api$/, '/api');
+  }
+
+  if (!trimmed.endsWith('/api')) {
+    return `${trimmed}/api`;
+  }
+
+  return trimmed;
+};
+
+const rawApiUrl = import.meta.env.VITE_API_URL;
+export const API_BASE_URL = normalizeBaseUrl(rawApiUrl);
+
+if (!import.meta.env.DEV && !rawApiUrl) {
+  console.error(
+    'VITE_API_URL is not set. Set it in Vercel to your Railway backend URL (e.g. https://your-app.up.railway.app/api)'
+  );
+}
 
 export const API_TIMEOUT = 15000;
 
@@ -59,7 +89,7 @@ const parseErrorResponse = (error) => {
 
   if (error.request) {
     return new ApiError(
-      'Unable to reach the server. Check your connection.',
+      'Unable to reach the server. Check your connection and API URL configuration.',
       0,
       null,
       error

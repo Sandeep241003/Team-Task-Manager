@@ -216,23 +216,14 @@ npm run preview
 
 ## Deployment
 
-### Frontend
+| Service | Platform |
+| ------- | -------- |
+| Frontend | [Vercel](https://vercel.com) (root directory: `client`) |
+| Backend | [Railway](https://railway.app) (repo root) |
+| Database | [MongoDB Atlas](https://www.mongodb.com/atlas) |
 
-Deploy on:
-
-* [Vercel](https://vercel.com?utm_source=chatgpt.com)
-
-### Backend
-
-Deploy on:
-
-* [Railway](https://railway.app?utm_source=chatgpt.com)
-
-### Database
-
-Use:
-
-* [MongoDB Atlas](https://www.mongodb.com/atlas?utm_source=chatgpt.com)
+Step-by-step setup: **[DEPLOYMENT.md](./DEPLOYMENT.md)**  
+Pre-launch checklist: **[PRODUCTION_CHECKLIST.md](./PRODUCTION_CHECKLIST.md)**
 
 ---
 
@@ -242,9 +233,11 @@ Use:
 
 ```env
 PORT=
+NODE_ENV=production
 MONGODB_URI=
 JWT_SECRET=
-JWT_EXPIRE=
+JWT_EXPIRE=7d
+CLIENT_URL=
 ```
 
 ### Frontend

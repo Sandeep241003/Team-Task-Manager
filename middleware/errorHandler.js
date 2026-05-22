@@ -64,6 +64,11 @@ const errorHandler = (err, req, res, next) => {
     message = 'Token has expired';
   }
 
+  if (err.message?.includes('not allowed by CORS')) {
+    statusCode = 403;
+    message = 'CORS policy: origin not allowed';
+  }
+
   if (!err.isOperational && statusCode === 500) {
     message = 'Internal Server Error';
     errors = null;
